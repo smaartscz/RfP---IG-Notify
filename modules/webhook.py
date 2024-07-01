@@ -1,5 +1,6 @@
 from discord_webhook import DiscordWebhook, DiscordEmbed
 import modules.configuration as configuration
+import modules.colors as colors
 
 def send_webhook(name, type, ig_id, caption, url, embed_color):
     role = configuration.get_value("General", "role_id")
@@ -21,4 +22,4 @@ def send_webhook(name, type, ig_id, caption, url, embed_color):
 
     #Send webhook
     response = webhook.execute()
-    print(f"Webhook sent! Response: {response}")
+    print(colors.green + f"Webhook sent! Response: {response}" + colors.reset)

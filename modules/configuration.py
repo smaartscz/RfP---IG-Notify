@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from modules.f_time import get_time
+import modules.colors as colors
 config = ConfigParser()
 
 
@@ -7,7 +8,19 @@ config = ConfigParser()
 def create():
     config.read("config.cfg")
 
-    webhook_url = input("Webhook URL: ")
+    print(colors.green + "Sup, now we will setup your Discord integration." + colors.reset)
+    webhook_url = input(colors. yellow + "Webhook URL: " + colors.reset)
+    ping_role = input(colors.yellow + "Ping role: " + colors.reset)
+
+    print(colors.green + "Now let's get to Instagram" + colors.reset)
+    ig_account = input(colors.yellow + "Monitor this Instagram account: " + colors.reset)
+
+    print(colors.yellow + f"Now I will ask about your login credintials. These credentials will be saved {colors.red}UNENCRYPTED{colors.reset} and only on {colors.red}YOUR{colors.reset} machine." + colors.reset)
+    ig_username = input(colors.yellow + "Instagram account username: " + colors.reset)
+    ig_password = input(colors.yellow + "Instagram account password: " + colors.reset)
+    max_fails = input(colors.yellow + "How many fails we can accept before terminating this script(3): " + colors.reset) or 3
+
+    print(colors.green + "Cool, now I will save it to config.cfg" + colors.reset)
 
     #Add basic information
     config.add_section("General")
@@ -17,16 +30,20 @@ def create():
     config.set("General", "name", "General")
 
     config.set("General", "webhook", webhook_url)
-    config.set("General", "role_id", "1121821428111646864")
+    config.set("General", "role_id", ping_role)
+
+    config.set("General", "max_fails", max_fails)
 
     config.add_section("Instagram")
-    config.set("Instagram", "account", "smaartscz")
+    config.set("Instagram", "account", ig_account)
+    config.set("Instagram", "username", ig_username)
+    config.set("Instagram", "password", ig_password)
 
     #Save config
     with open("config.cfg", "w") as f:
         config.write(f)
     
-    print("Config successfully generated!")
+    print(colors.green + "Config successfully generated!" + colors.reset)
 
 
 def load():
@@ -34,11 +51,11 @@ def load():
     content = {}
     for section in config.sections():
         content[section] = dict(config.items(section))
-    print("Config loaded successfully!")
+    print(colors.green + "Config loaded successfully!" + colors.reset)
     return content
 
 def save(section, key, value):
-    print("Saving config!")
+    print(colors.yellow + "Saving config!" + colors.reset)
     config.read("config.cfg")
     section_name = section.replace(" ","_")
     try:
@@ -55,7 +72,7 @@ def save(section, key, value):
         config.set(section_name, key, value)
         with open("config.cfg", "w") as f:
             config.write(f)   
-    print("Config saved!") 
+    print(colors.green + "Config saved!" + colors.reset) 
 
 def modify(action, section, key="", value=""):
     config.read("config.cfg")
