@@ -16,6 +16,7 @@ L = instaloader.Instaloader(iphone_support=False,save_metadata=False,fatal_statu
 profile = None
 
 try:
+    L.load_session_from_file(instagram_username, "session_file")
     L.login(instagram_username, instagram_password)
 except instaloader.BadCredentialsException:
     print(colors.red + f"Login failed. Looks like Instagram flagged this account :(. Let's sleep for 30min." + colors.reset) 
@@ -29,10 +30,9 @@ except instaloader.BadCredentialsException:
 
 def fetch_latest_post():
     global profile
-    posts = list(profile.get_posts())
-    if posts:
-        latest_post = posts[0]
-        return latest_post.shortcode, latest_post.url, latest_post.caption
+    posts = profile.get_posts()
+    for post in posts:
+        return post.shortcode, post.url, post.caption
     return None, None, None
 
 # Function to fetch the latest story
