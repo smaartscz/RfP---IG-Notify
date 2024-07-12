@@ -11,7 +11,7 @@ def create():
     print(colors.green + "Sup, now we will setup your Discord integration." + colors.reset)
     webhook_url = input(colors. yellow + "Webhook URL: " + colors.reset)
     ping_role = input(colors.yellow + "Ping role: " + colors.reset)
-
+    
     print(colors.green + "Now let's get to Instagram" + colors.reset)
     ig_account = input(colors.yellow + "Monitor this Instagram account: " + colors.reset)
 
@@ -19,6 +19,17 @@ def create():
     ig_username = input(colors.yellow + "Instagram account username: " + colors.reset)
     ig_password = input(colors.yellow + "Instagram account password: " + colors.reset)
     max_fails = input(colors.yellow + "How many fails we can accept before terminating this script(3): " + colors.reset) or 3
+    enable_posts = input(colors.yellow + "Do you wanna get notifications for new posts? " + colors.reset)
+    enable_posts.lower()
+    if enable_posts == "y" or enable_posts == "yes":
+        enable_posts = "True"
+    else: enable_posts = "False"
+
+    enable_stories = input(colors.yellow + "Do you wanna get notifications for new stories? " + colors.reset)
+    enable_stories.lower()
+    if enable_stories == "y" or enable_stories == "yes":
+        enable_stories = "True"
+    else: enable_stories = "False"
 
     print(colors.green + "Cool, now I will save it to config.cfg" + colors.reset)
 
@@ -34,10 +45,13 @@ def create():
 
     config.set("General", "max_fails", max_fails)
 
+
     config.add_section("Instagram")
     config.set("Instagram", "account", ig_account)
     config.set("Instagram", "username", ig_username)
     config.set("Instagram", "password", ig_password)
+    config.set("Instagram", "posts", enable_posts)
+    config.set("Instagram", "stories", enable_stories)
 
     #Save config
     with open("config.cfg", "w") as f:
